@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>WebView Test Site</title>
+  <title>WebView Analytics Test Site</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Detect if page is opened inside app -->
   <script>
     const params = new URLSearchParams(window.location.search);
     const isWebView = params.get("nativewebview") === "true";
@@ -12,13 +13,51 @@
     console.log("Running in WebView:", isWebView);
   </script>
 
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){
+      w[l]=w[l]||[];
+      w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),
+          dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;
+      j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N2T4MS7M');
+  </script>
+  <!-- End Google Tag Manager -->
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .btn { display:block; margin:10px 0; padding:12px; background:#0057ff; color:#fff; text-align:center; text-decoration:none; border-radius:6px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .btn {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      background: #0057ff;
+      color: #ffffff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N2T4MS7M"
+            height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
   <h1>WebView Analytics Test Page</h1>
 
   <p id="status">Checking environment…</p>
@@ -27,11 +66,23 @@
   <a class="btn" href="?nativewebview=false">Reload as Browser</a>
   <a class="btn" href="https://example.com" target="_blank">Open example.com</a>
 
+  <button class="btn" onclick="sendTestEvent()">Send test event</button>
+
   <script>
     document.getElementById("status").textContent =
       window.runningInWebview
         ? "Mode: Inside App (nativewebview=true)"
         : "Mode: Normal Browser";
+
+    function sendTestEvent() {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "test_event",
+        source: window.runningInWebview ? "webview" : "browser"
+      });
+      alert("Event sent. Check GTM Preview.");
+    }
   </script>
+
 </body>
 </html>
