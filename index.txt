@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WebView Test Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const isWebView = params.get("nativewebview") === "true";
+    window.runningInWebview = isWebView;
+    console.log("Running in WebView:", isWebView);
+  </script>
+
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .btn { display:block; margin:10px 0; padding:12px; background:#0057ff; color:#fff; text-align:center; text-decoration:none; border-radius:6px; }
+  </style>
+</head>
+
+<body>
+  <h1>WebView Analytics Test Page</h1>
+
+  <p id="status">Checking environment…</p>
+
+  <a class="btn" href="?nativewebview=true">Reload as App (WebView)</a>
+  <a class="btn" href="?nativewebview=false">Reload as Browser</a>
+  <a class="btn" href="https://example.com" target="_blank">Open example.com</a>
+
+  <script>
+    document.getElementById("status").textContent =
+      window.runningInWebview
+        ? "Mode: Inside App (nativewebview=true)"
+        : "Mode: Normal Browser";
+  </script>
+</body>
+</html>
